@@ -27,10 +27,12 @@ help:
 	@ echo "HERE: " ${HERE}
 
 PYTHON_SOURCE = \
-	hp35stack.py
+	hp35stack.py \
+	pyproject.toml
 
 FILES = \
 	${PYTHON_SOURCE} \
+	LICENSE \
 	Makefile \
 	pylintrc \
 	README.md

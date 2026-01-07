@@ -1,0 +1,13 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hp35stack"
+version = "1.0"
+readme = "README.md"
+description = "HP35 Stack class (built for CNC - complex number calculator)"
+authors = [
+    { name = "Marc Donner", email = "marc.donner@gmail.com" },
+    ]
+requires-python = ">=3.9"
