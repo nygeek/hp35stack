@@ -28,6 +28,7 @@ help:
 
 PYTHON_SOURCE = \
 	hp35stack.py \
+	hp35stack10.py \
 	pyproject.toml
 
 FILES = \
@@ -49,7 +50,7 @@ lint: pylint
 
 .PHONY: test
 test:
-	${PYTHON} hp35stack.py
+	${PYTHON} hp35stack10.py
 
 listings: listing-hp35stack.pdf listing-Makefile.pdf
 	mv $^ ~/tmp
