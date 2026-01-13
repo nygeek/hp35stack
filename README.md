@@ -48,6 +48,11 @@ And then install it for the calculator that uses the stack:
 
 ## Known bugs
 
+At this point there are two modules: hp35stack.py (cmath complex
+type) and hp35stack10.py (CMath10 type).  There should be only one.
+When the Round TUIT arrives I will rebuild these as a single class
+that is parameterized with the class that it manipulates.
+
 ## License
 
 Apache License 2.0
