@@ -40,7 +40,7 @@ been added to a public Python library, you will need to install it locally
 on your machine.  For the purposes of discussion, let's assume that it is
 installed at ```~/projects/h/hp35stack/```
 
-```> git clone https://github.com/nygeek/hp35stack```
+```> git clone https://github.com/nygeek/hp35stack.git```
 
 And then install it for the calculator that uses the stack:
 
