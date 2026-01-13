@@ -19,15 +19,29 @@ ToDo:
 # --------- Python Libraries --------- #
 
 import json
-import cmath
+import cmath as std_cmath
+from trace_debug import DebugTrace
+
+# ----- Variables ----- #
+
+DEBUG = DebugTrace(True)
 
 # --------- HP 35 Stack Class --------- #
 
 class HP35Stack:
     """ Class to implement the HP35 Stack and sto/rcl register """
 
-    def __init__(self, depth=4, rel_tol=1e-10 ):
-        _zero = complex(0.0, 0.0)
+    def __init__(self, depth=4, rel_tol=1e-10, math_mod=None):
+        if math_mod is None:
+            # Standard Python
+            self.math = std_cmath
+            self.make_complex = complex # use Python's built-in global
+            self.abs = abs # use Python's built-in global
+        else: # CMath10
+            self.math = math_mod
+            self.make_complex = math_mod.complex
+            self.abs = math_mod.CMath10.scalar_abs
+        _zero = self.make_complex(0.0, 0.0)
         self.stack = [_zero] * depth
         self.depth = depth
         self.rel_tol = rel_tol
@@ -54,26 +68,8 @@ class HP35Stack:
         # this destroys the value at the top of the stack
         for j in range(self.depth - 1, 0, -1):
             self.stack[j] = self.stack[j-1]
-        _result = self.clamp(cn)
-        self.set_x(_result)
-        return _result
-
-
-    def clamp(self, z):
-        """ clamp real and imag parts of z to within clamp of ints """
-        _r = complex(z).real
-        _i = complex(z).imag
-        if self.rel_tol != 0:
-            if round(abs(z)) != 0:
-                if cmath.isclose(_r, round(_r),
-                                 rel_tol=self.rel_tol,
-                                 abs_tol=self.rel_tol):
-                    _r = round(_r)
-                if cmath.isclose(_i, round(_i),
-                                 rel_tol=self.rel_tol,
-                                 abs_tol=self.rel_tol):
-                    _i = round(_i)
-        return complex(_r, _i)
+        self.set_x(cn)
+        return cn
 
 
     def pop(self):
@@ -129,7 +125,7 @@ class HP35Stack:
 
     def clear(self):
         """ clear the stack """
-        _zero = complex(0,0)
+        _zero = self.make_complex(0,0)
         self.stack = [_zero] * self.depth
         self.storcl = _zero
 
@@ -159,13 +155,15 @@ class HP35Stack:
             self.count = new['count']
         if 'stack' in new:
             for j in range(0, self.depth):
-                self.stack[j] = complex(new['stack'][j][0], new['stack'][j][1])
+                self.stack[j] = self.make_complex(new['stack'][j][0], new['stack'][j][1])
         if 'storcl' in new:
-            self.storcl = complex(new['storcl'][0], new['storcl'][1])
+            self.storcl = self.make_complex(new['storcl'][0], new['storcl'][1])
 
 
 def main():
     """ Simple unit tests. """
+
+    import cmath
     stack = HP35Stack(8)
     print(f"Stack:\n{stack}")
     _three = complex(3, 3)
@@ -195,6 +193,13 @@ def main():
     # now reconstitute the stack ...
     stack.load_stack_from_json(json_stash)
     print(f"Stack:\n{stack}")
+
+    print(f"\nNow trying with CMath10")
+    import cmath10 as std_math
+    stack10 = HP35Stack(8, math_mod=std_math)
+    print(f"Stack:\n{stack10}")
+    _three = std_math.CMath10(3, 3)
+    stack10.push(_three)
 
 
 if __name__ == '__main__':
