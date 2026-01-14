@@ -24,7 +24,7 @@ from trace_debug import DebugTrace
 
 # ----- Variables ----- #
 
-DEBUG = DebugTrace(True)
+DEBUG = DebugTrace(False)
 
 # --------- HP 35 Stack Class --------- #
 
@@ -194,12 +194,15 @@ def main():
     stack.load_stack_from_json(json_stash)
     print(f"Stack:\n{stack}")
 
+
     print(f"\nNow trying with CMath10")
     import cmath10 as std_math
+    DEBUG = DebugTrace(True)
     stack10 = HP35Stack(8, math_mod=std_math)
     print(f"Stack:\n{stack10}")
     _three = std_math.CMath10(3, 3)
     stack10.push(_three)
+    print(f"Stack:\n{stack10}")
 
 
 if __name__ == '__main__':
