@@ -37,10 +37,11 @@ class HP35Stack:
             self.math = std_cmath
             self.make_complex = complex # use Python's built-in global
             self.abs = abs # use Python's built-in global
-        else: # CMath10
+        else: # CMath10 or other math module
             self.math = math_mod
-            self.make_complex = math_mod.complex
-            self.abs = math_mod.CMath10.scalar_abs
+            # self.make_complex = math_mod.complex
+            self.make_complex = math_mod.StdLibAdapter.complex
+            self.abs = math_mod.StdLibAdapter.abs
         _zero = self.make_complex(0.0, 0.0)
         self.stack = [_zero] * depth
         self.depth = depth
@@ -197,7 +198,7 @@ def main():
 
     print(f"\nNow trying with CMath10")
     import cmath10 as std_math
-    DEBUG = DebugTrace(True)
+    DEBUG = DebugTrace(False)
     stack10 = HP35Stack(8, math_mod=std_math)
     print(f"Stack:\n{stack10}")
     _three = std_math.CMath10(3, 3)
