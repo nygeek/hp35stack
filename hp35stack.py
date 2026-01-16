@@ -19,7 +19,6 @@ ToDo:
 # --------- Python Libraries --------- #
 
 import json
-import cmath as std_cmath
 from trace_debug import DebugTrace
 
 # ----- Variables ----- #
@@ -33,15 +32,11 @@ class HP35Stack:
 
     def __init__(self, depth=4, rel_tol=1e-10, math_mod=None):
         if math_mod is None:
-            # Standard Python
-            self.math = std_cmath
-            self.make_complex = complex # use Python's built-in global
-            self.abs = abs # use Python's built-in global
+            # Use Python's built-in
+            self.make_complex = complex
         else: # CMath10 or other math module
             self.math = math_mod
-            # self.make_complex = math_mod.complex
-            self.make_complex = math_mod.StdLibAdapter.complex
-            self.abs = math_mod.StdLibAdapter.abs
+            self.make_complex = math_mod.complex
         _zero = self.make_complex(0.0, 0.0)
         self.stack = [_zero] * depth
         self.depth = depth
@@ -197,11 +192,11 @@ def main():
 
 
     print(f"\nNow trying with CMath10")
-    import cmath10 as std_math
+    from cmath10 import StdLibAdapter
     DEBUG = DebugTrace(False)
-    stack10 = HP35Stack(8, math_mod=std_math)
+    stack10 = HP35Stack(8, math_mod=StdLibAdapter)
     print(f"Stack:\n{stack10}")
-    _three = std_math.CMath10(3, 3)
+    _three = StdLibAdapter.complex(3, 3)
     stack10.push(_three)
     print(f"Stack:\n{stack10}")
 
